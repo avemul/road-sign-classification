@@ -1,0 +1,41 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import cv2
+import xml.etree.ElementTree as ET
+from PIL import Image, ImageDraw
+# DATADIR = "/Users/aadya/Downloads/archive"
+# CATEGORIES = ["images", "annotations"]
+#
+# for category in CATEGORIES:
+#     path = os.path.join(DATADIR, category)
+#     for img in os.listdir(path):
+#         img_array = cv2.imread(os.path.join(path, img), cv2.IMREAD_GRAYSCALE)
+#         plt.imshow(img_array)
+#         plt.show()
+#
+# IMG_SIZE = 100
+# new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
+# plt.imshow(new_array, cmap='gray')
+# plt.show()
+with open('/Users/aadya/Downloads/archive/annotations/road1.xml') as annot_file:
+    (''.join(annot_file.readlines()))
+first_image = Image.open('/Users/aadya/Downloads/archive/images/road1.png')
+tree = ET.parse('/Users/aadya/Downloads/archive/annotations/road1.xml')
+root = tree.getroot()
+first_annotation = []
+for neighbor in root.iter('bndbox'):
+    xmin = int(neighbor.find('xmin').text)
+    ymin = int(neighbor.find('ymin').text)
+    xmax = int(neighbor.find('xmax').text)
+    ymax = int(neighbor.find('ymax').text)
+    first_annotation.append([xmin, ymin, xmax, ymax])
+first_image_annotation = first_image.copy()
+img_bbox = ImageDraw.Draw(first_image_annotation)
+for neighbor in root.iter('object'):
+    classification = str(neighbor.find('name').text)
+    print(classification)
+for bbox in first_annotation:
+    img_bbox.rectangle(bbox, outline="black", width=4)
+    plt.imshow(first_image_annotation)
+    plt.show()
