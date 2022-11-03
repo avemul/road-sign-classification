@@ -5,7 +5,7 @@
 # Background
 ### What is a CNN?
 ### Why use CNNs for this problem?
-### How can CNN be implemented?
+### How can CNNs be implemented?
 
 # Dataset and Technical tools
 Dataset taken from kaggle: https://www.kaggle.com/datasets/andrewmvd/road-sign-detection
