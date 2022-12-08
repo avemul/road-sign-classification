@@ -1,41 +1,70 @@
 import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 import os
 import cv2
 import xml.etree.ElementTree as ET
 from PIL import Image, ImageDraw
-# DATADIR = "/Users/aadya/Downloads/archive"
-# CATEGORIES = ["images", "annotations"]
-#
-# for category in CATEGORIES:
-#     path = os.path.join(DATADIR, category)
-#     for img in os.listdir(path):
-#         img_array = cv2.imread(os.path.join(path, img), cv2.IMREAD_GRAYSCALE)
-#         plt.imshow(img_array)
-#         plt.show()
-#
-# IMG_SIZE = 100
-# new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
-# plt.imshow(new_array, cmap='gray')
-# plt.show()
-with open('/Users/aadya/Downloads/archive/annotations/road1.xml') as annot_file:
-    (''.join(annot_file.readlines()))
-first_image = Image.open('/Users/aadya/Downloads/archive/images/road1.png')
-tree = ET.parse('/Users/aadya/Downloads/archive/annotations/road1.xml')
-root = tree.getroot()
-first_annotation = []
-for neighbor in root.iter('bndbox'):
-    xmin = int(neighbor.find('xmin').text)
-    ymin = int(neighbor.find('ymin').text)
-    xmax = int(neighbor.find('xmax').text)
-    ymax = int(neighbor.find('ymax').text)
-    first_annotation.append([xmin, ymin, xmax, ymax])
-first_image_annotation = first_image.copy()
-img_bbox = ImageDraw.Draw(first_image_annotation)
-for neighbor in root.iter('object'):
-    classification = str(neighbor.find('name').text)
-    print(classification)
-for bbox in first_annotation:
-    img_bbox.rectangle(bbox, outline="black", width=4)
-    plt.imshow(first_image_annotation)
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Conv2D, MaxPool2D, Flatten
+from keras.utils import np_utils
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+DATADIR = "/Users/aadya/Downloads/archive"
+CATEGORIES = ["images", "annotations"]
+images = []
+labels = []
+imagedir = os.path.join(DATADIR, "images")
+annotationdir = os.path.join(DATADIR, "annotations")
+for img in os.listdir(imagedir):
+    imagepath = os.path.join(imagedir, img)
+    annotationpath = os.path.join(annotationdir, img.replace(".png", ".xml"))
+    img_array = np.array(Image.open(imagepath).resize((300, 400)))
+    images.append(img_array)
+    tree = ET.parse(annotationpath)
+    root = tree.getroot()
+    classification = root.find("./object/name").text
+    classificationarr = []
+    if classification == 'trafficlight':
+        classificationarr = [1, 0, 0, 0]
+    elif classification == 'speedlimit':
+        classificationarr = [0, 1, 0, 0]
+    elif classification == 'crosswalk':
+        classificationarr = [0, 0, 1, 0]
+    elif classification == 'stop':
+        classificationarr = [0, 0, 0, 1]
+    labels.append(classificationarr)
+X = np.asarray(images)
+y = np.asarray(labels)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.33)
+X_train = X_train.reshape(X_train.shape[0], 400, 300, 4)
+X_val = X_val.reshape(X_val.shape[0], 400, 300, 4)
+X_test = X_test.reshape(X_test.shape[0], 400, 300, 4)
+X_train = X_train.astype('float16')
+X_val = X_val.astype('float16')
+X_test = X_test.astype('float16')
+X_train /= 255
+X_val /= 255
+X_test /= 255
+n_classes = 4
+model = Sequential()
+model.add(Conv2D(25, kernel_size=(3, 3), strides=(1, 1), padding='valid', activation='relu', input_shape=(400, 300, 4)))
+model.add(MaxPool2D(pool_size=(1, 1)))
+model.add(Flatten())
+model.add(Dense(100, activation='relu'))
+model.add(Dense(4, activation='softmax'))
+
+model.summary()
+
+model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
+model.fit(X_train, y_train, batch_size=128, epochs=15, validation_data=(X_val, y_val))
+
+if accuracy_score == 100:
+    plt.imshow(img_array)
     plt.show()
+if accuracy_score == 0:
+    plt.imshow(img_array)
+    plt.show()
+
+
+# TODO: for the writeup, collect 5 labels (a mix of correct and incorrect examples) and their corresponding images
