@@ -1,10 +1,6 @@
-Introduction
 	An average of 2.5 million car crashes occur annually of which 1.3 million people die. Drunk and reckless drivers are the cause of around 10 thousand deaths each year in the United States alone.  With the implementation of autonomous cars, thousands of lives can be spared. Large corporations such as Tesla and Google, have worked around the idea of self-driving cars for a long time with the use of machine learning concepts. Convolutional neural networks (CNN) are often used for visual tasks and can be used for the identification of various road signs. So, how effective are different CNN architectures for classifying a road sign as a traffic light, stop sign, speed limit or crosswalk sign? 
-Background
 	Convolutional neural network (CNN) is a method of machine learning used for image classification and visual tasks. CNNs are based on the visual cortex of the brain and several recent advancements have increased the use of CNNs in many upcoming projects. CNNs consist of several convolutional layers which an image is passed through to get an output. Convolution layers extract features from the image. Training data must be used for CNNs to adjust the weights and biases which contribute to the final accuracy. A convolutional neural network can be used for this project because the goal of the program is to classify road signs which is a visual task and can be achieved using CNN. CNN can be implemented into a code using several methods, however one of the most common is keras. Keras was developed by Google and is a deep learning API that can be used to facilitate the use of CNNs. Keras was written in python and can currently only be used in python code.  
-Dataset, Technical Tools
 	The dataset used for this code was taken from Kaggle. The name of the dataset is “Road Sign Detection” and was created by the user, LARXEL.
-Classification
 Correctly Classified Images:
 
 Incorrectly Classified Images:
@@ -50,6 +46,5 @@ Epoch 19/20
 5/5 [==============================] - 0s 56ms/step - loss: 0.2924 - accuracy: 0.9119 - val_loss: 0.7267 - val_accuracy: 0.8182
 Epoch 20/20
 5/5 [==============================] - 0s 57ms/step - loss: 0.2583 - accuracy: 0.9217 - val_loss: 0.7977 - val_accuracy: 0.7955
-Analysis, Discussion
-Overall, using a CNN model for this project produced satisfactory results with an accuracy of around 80%. The original code had an accuracy of 72%, however adding an additional convolutional increased the accuracy of the code. CNNs worked well in this context and the results were as imagined. The code can be improved by adding more layers; however, a different method of machine learning could produce an increased accuracy score. Another way the accuracy of the code can be improved is by using a larger dataset. A larger dataset would increase the amount of training data which can lead to improved results. In the end, the code can be improved using various methods, however using CNN is a good approach for adequate results. 
+	Overall, using a CNN model for this project produced satisfactory results with an accuracy of around 80%. The original code had an accuracy of 72%, however adding an additional convolutional increased the accuracy of the code. CNNs worked well in this context and the results were as imagined. The code can be improved by adding more layers; however, a different method of machine learning could produce an increased accuracy score. Another way the accuracy of the code can be improved is by using a larger dataset. A larger dataset would increase the amount of training data which can lead to improved results. In the end, the code can be improved using various methods, however using CNN is a good approach for adequate results. 
 
