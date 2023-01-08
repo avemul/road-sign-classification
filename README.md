@@ -2,10 +2,13 @@
 
 An average of 2.5 million car crashes occur annually from which 1.3 million people die. Drunk and reckless drivers are the cause of around 10 thousand deaths each year in the United States alone.  With the implementation of autonomous cars, thousands of lives can be spared. Large corporations such as Tesla and Google, have worked around the idea of self-driving cars for a long time with the use of machine learning concepts. Convolutional neural networks (CNN) are often used for visual tasks and can be used for the identification of various road signs. So, how effective are different CNN architectures for classifying a road sign as a traffic light, stop sign, speed limit or crosswalk sign? 
 ## Background
-	Convolutional neural network (CNN) is a method of machine learning used for image classification and visual tasks. CNNs are based on the visual cortex of the brain and several recent advancements have increased the use of CNNs in many upcoming projects. CNNs consist of several convolutional layers which an image is passed through to get an output. Convolution layers extract features from the image. Training data must be used for CNNs to adjust the weights and biases which contribute to the final accuracy. A convolutional neural network can be used for this project because the goal of the program is to classify road signs which is a visual task and can be achieved using CNN.  
+
+Convolutional neural network (CNN) is a method of machine learning used for image classification and visual tasks. CNNs are based on the visual cortex of the brain and several recent advancements have increased the use of CNNs in many upcoming projects. CNNs consist of several convolutional layers which an image is passed through to get an output. Convolution layers extract features from the image. Training data must be used for CNNs to adjust the weights and biases which contribute to the final accuracy. A convolutional neural network can be used for this project because the goal of the program is to classify road signs which is a visual task and can be achieved using CNN.  
+
 CNN can be implemented into a code using several methods, however one of the most common is keras. Keras was developed by Google and is a deep learning API that can be used to facilitate the use of CNNs. Keras was written in python and can currently only be used in python code.
+
 ## Dataset
-	The dataset used for this code was taken from Kaggle. The name of the dataset is “Road Sign Detection” and was created by the user, LARXEL.
+The dataset used for this code was taken from Kaggle. The name of the dataset is “Road Sign Detection” and was created by the user, LARXEL.
 ## Classification
 Final model of 78%-82% accuracy:
 #import necessary packages for the code
