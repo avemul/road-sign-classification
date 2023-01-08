@@ -10,8 +10,7 @@ CNN can be implemented into a code using several methods, however one of the mos
 ## Dataset
 The dataset used for this code was taken from Kaggle. The name of the dataset is “Road Sign Detection” and was created by the user, LARXEL.
 ## Classification
-Final model of 78%-82% accuracy:
-#import necessary packages for the code
+The following is the code we used for our final model, which had around 78-82% accuracy. 
 ```python
 import numpy as np
 from matplotlib import pyplot as plt
@@ -25,34 +24,40 @@ from keras.utils import np_utils
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 ```
-#provide path to dataset and divide data into two folders
+Import the necessary packages.
+
+```python
 DATADIR = "/Users/aadya/Downloads/archive"
 CATEGORIES = ["images", "annotations"]
-#create empty lists to store images and annotations
 images = []
 labels = []
-#create a path for each image and annotation in the dataset
 imagedir = os.path.join(DATADIR, "images")
 annotationdir = os.path.join(DATADIR, "annotations")
-#initialize the desired width and height for each image in the dataset
+```
+Provide the path to dataset and divide the data into two folders.
+```python
 width = 150
 height = 200
-#join each image with its path
+```
+Initialize the desired width and height for each image in the dataset
+```python
 for category in CATEGORIES:
    path = os.path.join(DATADIR, category)
    for img in os.listdir(path):
        img_arr = cv2.imread(os.path.join(path, img))
-#turn each annotation file into xml format so they can be used and resize each image then save each as an array
+```
+Join each image with its path.
+```python
 for img in os.listdir(imagedir):
    imagepath = os.path.join(imagedir, img)
    annotationpath = os.path.join(annotationdir, img.replace(".png", ".xml"))
    img_array = np.array(Image.open(imagepath).resize((width, height)))
    images.append(img_array)
-#find the classification of each image by searching its corresponding annotation
+# find the classification of each image by searching its corresponding annotation
    tree = ET.parse(annotationpath)
    root = tree.getroot()
    classification = root.find("./object/name").text
-#set each classification as a value in an array and save the values in a list
+# set each classification as a value in an array and save the values in a list
 classificationarr = []
    if classification == 'trafficlight':
        classificationarr = [1, 0, 0, 0]
@@ -63,20 +68,22 @@ classificationarr = []
    elif classification == 'stop':
        classificationarr = [0, 0, 0, 1]
    labels.append(classificationarr)
-#set x to be equal to the images and y as their corresponding labels
+```
+Here, we match each image with its classification, and convert the classifications to their one-hot encoding. 
+```python
 X = np.asarray(images)
 y = np.asarray(labels)
-#split the data into training and testing data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.33, random_state=42)
-#build the input vector
 X_train = X_train.astype('float16')
 X_val = X_val.astype('float16')
 X_test = X_test.astype('float16')
-#make each image black and white
 X_train /= 255
 X_val /= 255
 X_test /= 255
+```
+Create the training, validation, and test data split. Also, normalize the image matrices.
+```python
 #create a stack of layers with the sequential model
 n_classes = 4
 model = Sequential()
@@ -101,9 +108,11 @@ model.summary()
 model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
 #train model in 20 epochs
 model.fit(X_train, y_train, batch_size=128, epochs=20, validation_data=(X_val, y_val))
+```
+Our model architecture starts with two convolutional layers, followed by two fully-connected hidden layers, and finally an output layer.
+```python
 #predict label of new set of data
 y_test_prediction = model.predict(X_test)
-#create empty lists to store data
 correct_imgs = []
 incorrect_imgs = []
 incorrect_labels = []
@@ -124,11 +133,15 @@ for i in range(3):
 for i in range(3):
    Image.fromarray((incorrect_imgs[i] * 255).astype(np.uint8)).show()
    print(incorrect_labels[i])
+```
+Finally, we run the model on the test data and store some examples of images it labels correctly and incorrectly. Below, we display these examples.
+
 Correctly Classified Images:
 
 Incorrectly Classified Images:
 
 Training and validation accuracy across 20 epochs:
+```
 Epoch 1/20
 5/5 [==============================] - 1s 160ms/step - loss: 1.0893 - accuracy: 0.7064 - val_loss: 0.8169 - val_accuracy: 0.7614
 Epoch 2/20
@@ -169,6 +182,8 @@ Epoch 19/20
 5/5 [==============================] - 0s 56ms/step - loss: 0.2924 - accuracy: 0.9119 - val_loss: 0.7267 - val_accuracy: 0.8182
 Epoch 20/20
 5/5 [==============================] - 0s 57ms/step - loss: 0.2583 - accuracy: 0.9217 - val_loss: 0.7977 - val_accuracy: 0.7955
+```
+
 ## Analysis
 Overall, using a CNN model for this project produced satisfactory results with an accuracy of 78%-82%. The original code had an accuracy of 72%, however adding an additional convolutional layer increased the accuracy of the code. CNNs worked well in this context and the results were as imagined. The code can be improved by adding more layers; however, a different method of machine learning could produce an increased accuracy score. Another way the accuracy of the code can be improved is by using a larger dataset. A larger dataset would increase the amount of training data which can lead to improved results. In the end, the code can be improved using various methods, however using CNN is one good approach for adequate results. 
 
