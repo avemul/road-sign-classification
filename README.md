@@ -137,8 +137,9 @@ for i in range(3):
 Finally, we run the model on the test data and store some examples of images it labels correctly and incorrectly. Below, we display these examples.
 
 Correctly Classified Images:
-
+![Correctly labeled images](/images/image1.png?raw=true "Correctly labeled images")
 Incorrectly Classified Images:
+![Incorrectly labeled images](/images/image2.png?raw=true "Incorrectly labeled images")
 
 Training and validation accuracy across 20 epochs:
 ```
