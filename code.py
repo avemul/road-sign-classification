@@ -18,28 +18,27 @@ annotationdir = os.path.join(DATADIR, "annotations")
 width = 150
 height = 200
 for category in CATEGORIES:
-    path = os.path.join(DATADIR, category)
-    for img in os.listdir(path):
-        img_arr = cv2.imread(os.path.join(path, img))
+   path = os.path.join(DATADIR, category)
+   for img in os.listdir(path):
+       img_arr = cv2.imread(os.path.join(path, img))
 for img in os.listdir(imagedir):
-    imagepath = os.path.join(imagedir, img)
-    annotationpath = os.path.join(annotationdir, img.replace(".png", ".xml"))
-    img_array = np.array(Image.open(imagepath).resize((width, height)))
-    images.append(img_array)
-
-    tree = ET.parse(annotationpath)
-    root = tree.getroot()
-    classification = root.find("./object/name").text
-    classificationarr = []
-    if classification == 'trafficlight':
-        classificationarr = [1, 0, 0, 0]
-    elif classification == 'speedlimit':
-        classificationarr = [0, 1, 0, 0]
-    elif classification == 'crosswalk':
-        classificationarr = [0, 0, 1, 0]
-    elif classification == 'stop':
-        classificationarr = [0, 0, 0, 1]
-    labels.append(classificationarr)
+   imagepath = os.path.join(imagedir, img)
+   annotationpath = os.path.join(annotationdir, img.replace(".png", ".xml"))
+   img_array = np.array(Image.open(imagepath).resize((width, height)))
+   images.append(img_array)
+   tree = ET.parse(annotationpath)
+   root = tree.getroot()
+   classification = root.find("./object/name").text
+classificationarr = []
+   if classification == 'trafficlight':
+       classificationarr = [1, 0, 0, 0]
+   elif classification == 'speedlimit':
+       classificationarr = [0, 1, 0, 0]
+   elif classification == 'crosswalk':
+       classificationarr = [0, 0, 1, 0]
+   elif classification == 'stop':
+       classificationarr = [0, 0, 0, 1]
+   labels.append(classificationarr)
 X = np.asarray(images)
 y = np.asarray(labels)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -50,7 +49,6 @@ X_test = X_test.astype('float16')
 X_train /= 255
 X_val /= 255
 X_test /= 255
-
 n_classes = 4
 model = Sequential()
 model.add(InputLayer(input_shape=(height, width, 4)))
@@ -62,27 +60,21 @@ model.add(Flatten())
 model.add(Dense(100, activation='relu'))
 model.add(Dense(50, activation='relu'))
 model.add(Dense(4, activation='softmax'))
-
 model.summary()
-
 model.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
 model.fit(X_train, y_train, batch_size=128, epochs=20, validation_data=(X_val, y_val))
-
 y_test_prediction = model.predict(X_test)
 correct_imgs = []
 incorrect_imgs = []
 incorrect_labels = []
 for y_pred, y_true, x in zip(y_test_prediction, y_test, X_test):
-    if np.argmax(y_pred) == np.argmax(y_true):
-        correct_imgs.append(x)
-    else:
-        incorrect_imgs.append(x)
-        incorrect_labels.append(y_pred)
-print(f'correctly labeled count:{len(correct_imgs)}')
-print(f'incorrectly labeled count:{len(incorrect_imgs)}')
-
-for i in range(8):
-    Image.fromarray((correct_imgs[i] * 255).astype(np.uint8)).show()
-for i in range(8):
-    Image.fromarray((incorrect_imgs[i] * 255).astype(np.uint8)).show()
-    print(incorrect_labels[i])
+   if np.argmax(y_pred) == np.argmax(y_true):
+       correct_imgs.append(x)
+   else:
+       incorrect_imgs.append(x)
+       incorrect_labels.append(y_pred)
+for i in range(3):
+   Image.fromarray((correct_imgs[i] * 255).astype(np.uint8)).show()
+for i in range(3):
+   Image.fromarray((incorrect_imgs[i] * 255).astype(np.uint8)).show()
+   print(incorrect_labels[i])
