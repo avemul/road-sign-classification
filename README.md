@@ -12,6 +12,7 @@ The dataset used for this code was taken from Kaggle. The name of the dataset is
 ## Classification
 Final model of 78%-82% accuracy:
 #import necessary packages for the code
+```python
 import numpy as np
 from matplotlib import pyplot as plt
 import os
@@ -23,6 +24,7 @@ from keras.layers import Dense, Dropout, Conv2D, MaxPool2D, Flatten, InputLayer
 from keras.utils import np_utils
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+```
 #provide path to dataset and divide data into two folders
 DATADIR = "/Users/aadya/Downloads/archive"
 CATEGORIES = ["images", "annotations"]
@@ -167,6 +169,6 @@ Epoch 19/20
 5/5 [==============================] - 0s 56ms/step - loss: 0.2924 - accuracy: 0.9119 - val_loss: 0.7267 - val_accuracy: 0.8182
 Epoch 20/20
 5/5 [==============================] - 0s 57ms/step - loss: 0.2583 - accuracy: 0.9217 - val_loss: 0.7977 - val_accuracy: 0.7955
-Analysis
+## Analysis
 Overall, using a CNN model for this project produced satisfactory results with an accuracy of 78%-82%. The original code had an accuracy of 72%, however adding an additional convolutional layer increased the accuracy of the code. CNNs worked well in this context and the results were as imagined. The code can be improved by adding more layers; however, a different method of machine learning could produce an increased accuracy score. Another way the accuracy of the code can be improved is by using a larger dataset. A larger dataset would increase the amount of training data which can lead to improved results. In the end, the code can be improved using various methods, however using CNN is one good approach for adequate results. 
 
